@@ -24,18 +24,8 @@ mongoose
     console.error("Error connecting to database:", error);
   });
 
-app.get("/create", async (req, res) => {
-  const demoUser = new User({
-    username: "demo11_user",
-    email: "demo11@example.com",
-    password: "demo_password",
-  });
-  const savedUser = await demoUser.save();
-  console.log(savedUser);
-});
-
-app.use("/user", userRouter);
-app.use("/book", bookRouter);
+app.use("/v1/user", userRouter);
+app.use("/v1/book", bookRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
