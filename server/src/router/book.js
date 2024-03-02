@@ -1,9 +1,10 @@
 import express from "express";
 import Book from "../model/book_model.js";
+import { checkToken } from "../utils/auth.js";
 
 const router = express.Router();
 
-router.get("/all", async (req, res) => {
+router.get("/all", checkToken, async (req, res) => {
   try {
     const books = await Book.find();
     res.status(200).json(books);

@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
 
     const user = new User({ username, email, password: hashedPW });
     await user.save();
-    const token = jwt.sign({ userId: user._id }, "password", {
+    const token = jwt.sign({ userId: user._id }, process.env.JWTPASSWORD, {
       expiresIn: "1h",
     });
     res.status(201).send({ message: "Login successful", token });
@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).send("Invalid password");
     }
 
-    const token = jwt.sign({ userId: user._id }, "password", {
+    const token = jwt.sign({ userId: user._id }, process.env.JWTPASSWORD, {
       expiresIn: "1h",
     });
 

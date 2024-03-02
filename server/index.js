@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import User from "./src/model/user_model.js";
 import userRouter from "./src/router/user.js";
 import bookRouter from "./src/router/book.js";
@@ -7,9 +8,9 @@ import bookRouter from "./src/router/book.js";
 const app = express();
 app.use(express.json());
 const port = 3000;
+dotenv.config();
 
-const uri =
-  "mongodb+srv://sima:zPeyicxelMFzGy9b@cluster0.kdrhvt4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGOURL;
 
 mongoose
   .connect(uri)
