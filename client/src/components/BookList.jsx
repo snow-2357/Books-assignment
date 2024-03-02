@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import BookCard from "./BookCard";
+import { AuthContext } from "../App";
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
+  const { userId, isLoggedIn, login, logout } = useContext(AuthContext);
+
+  console.log(userId, isLoggedIn, login, logout);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -21,7 +25,6 @@ export default function BookList() {
     fetchBooks();
   }, []);
 
-  console.log(books);
   return (
     <div className="flex justify-center">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">

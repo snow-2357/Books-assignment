@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 // import React from "react";
 
-export default function SignUpForm() {
+export default function SignUpForm({ toggle }) {
   return (
     <>
       <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -64,12 +65,12 @@ export default function SignUpForm() {
           </button>
           <p className="text-sm font-light text-gray-500 dark:text-gray-400">
             Already Have a account ?{" "}
-            <a
-              href="#"
-              className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+            <span
+              onClick={toggle}
+              className="cursor-pointer font-medium text-primary-600 hover:underline dark:text-primary-500"
             >
               Sign In
-            </a>
+            </span>
           </p>
         </form>
       </div>
