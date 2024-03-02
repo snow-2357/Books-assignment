@@ -2,8 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import User from "./src/model/user_model.js";
 import userRouter from "./src/router/user.js";
+import bookRouter from "./src/router/book.js";
 
 const app = express();
+app.use(express.json());
 const port = 3000;
 
 const uri =
@@ -32,6 +34,7 @@ app.get("/create", async (req, res) => {
 });
 
 app.use("/user", userRouter);
+app.use("/book", bookRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");

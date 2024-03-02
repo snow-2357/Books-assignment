@@ -5,8 +5,6 @@ import User from "../model/user_model.js";
 
 const router = express.Router();
 
-router.use(express.json());
-
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
