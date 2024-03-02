@@ -5,6 +5,7 @@ import SignInForm from "./components/SignInForm";
 import SignUpForm from "./components/SignUpForm";
 
 function App() {
+  console.log(import.meta.env.VITE_BACKEND_URL);
   return (
     <>
       {/* <section className="bg-gray-50 dark:bg-gray-900">
