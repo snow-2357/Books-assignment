@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import User from "./src/model/user_model.js";
+import userRouter from "./src/router/user.js";
 
 const app = express();
 const port = 3000;
@@ -29,6 +30,8 @@ app.get("/create", async (req, res) => {
   const savedUser = await demoUser.save();
   console.log(savedUser);
 });
+
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
