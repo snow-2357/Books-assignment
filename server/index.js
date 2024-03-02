@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import User from "./src/model/user_model.js";
 import userRouter from "./src/router/user.js";
 import bookRouter from "./src/router/book.js";
 
