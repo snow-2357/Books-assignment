@@ -6,7 +6,7 @@ import { AuthContext } from "../App";
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
-  const { userId, isLoggedIn, login, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchBooks = async () => {

@@ -1,32 +1,21 @@
+/* eslint-disable react/prop-types */
 // import React from "react";
 
-export default function BookCard() {
+export default function BookCard({ book }) {
+  console.log(book);
   return (
     <>
       <div className="max-w-sm rounded overflow-hidden shadow-lg">
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-4 flex justify-between">
-            <h1>1984(300)</h1>
-            <h1>George Orwell</h1>
+          <div className=" mb-4 flex flex-col justify-between">
+            <h1 className="font-bold text-xl">
+              {book?.title}({book?.pageCount})
+            </h1>
+            <p className="font-semibold text-md">{book?.author}</p>
           </div>
-          <p className="text-gray-700 text-base">
-            1984 is a dystopian social science fiction novel by George Orwell.
-            It was published in 1949 and is set in the year 1984 when most of
-            the world population has become victims of perpetual war,
-            omnipresent government surveillance, and propaganda.
-          </p>
+          <p className="text-gray-700 text-base">{book.description}</p>
         </div>
-        <div className="px-6 pt-4 pb-2">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #photography
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #travel
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #winter
-          </span>
-        </div>
+
         <div className="flex justify-between">
           <button
             type="submit"
