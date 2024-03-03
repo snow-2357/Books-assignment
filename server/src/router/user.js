@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../model/user_model.js";
+import { checkToken } from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -24,7 +25,9 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWTPASSWORD, {
       expiresIn: "1h",
     });
-    res.status(201).send({ message: "Login successful", token });
+    res
+      .status(201)
+      .send({ message: "Login successful", userId: user._id, token });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -50,10 +53,16 @@ router.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(201).send({ message: "Login successful", token });
+    res
+      .status(201)
+      .send({ message: "Login successful", userId: user._id, token });
   } catch (error) {
     res.status(500).send("Error");
   }
+});
+
+router.get("/check-token", checkToken, (req, res) => {
+  res.status(200).json({ message: "Token is valid", user: req.user });
 });
 
 export default router;

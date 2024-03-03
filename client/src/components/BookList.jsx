@@ -8,8 +8,6 @@ export default function BookList() {
   const [books, setBooks] = useState([]);
   const { userId, isLoggedIn, login, logout } = useContext(AuthContext);
 
-  console.log(userId, isLoggedIn, login, logout);
-
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -26,11 +24,22 @@ export default function BookList() {
   }, []);
 
   return (
-    <div className="flex justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-        {books &&
-          books?.map((book, index) => <BookCard key={index} book={book} />)}
+    <>
+      <div className="flex w-full justify-end my-4 px-4">
+        <button
+          onClick={logout}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          LogOut
+        </button>
       </div>
-    </div>
+
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
+          {books &&
+            books?.map((book, index) => <BookCard key={index} book={book} />)}
+        </div>
+      </div>
+    </>
   );
 }
