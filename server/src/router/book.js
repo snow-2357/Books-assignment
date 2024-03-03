@@ -4,10 +4,31 @@ import { checkToken } from "../utils/auth.js";
 
 const router = express.Router();
 
+// router.get("/all", checkToken, async (req, res) => {
+//   try {
+//     const books = await Book.find();
+//     res.status(200).json(books);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
 router.get("/all", checkToken, async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 4;
+
   try {
-    const books = await Book.find();
-    res.status(200).json(books);
+    const totalCount = await Book.countDocuments();
+    const totalPages = Math.ceil(totalCount / limit);
+    const offset = (page - 1) * limit;
+
+    const books = await Book.find().skip(offset).limit(limit);
+
+    res.status(200).json({
+      page,
+      totalPages,
+      books,
+    });
   } catch (error) {
     res.status(500).send(error);
   }

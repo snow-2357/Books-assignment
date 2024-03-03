@@ -35,7 +35,7 @@ export default function BookList() {
             headers: { token: userToken },
           }
         );
-        setBooks(response.data);
+        setBooks(response?.data?.books);
       } catch (error) {
         console.error("Error fetching books:", error);
       }

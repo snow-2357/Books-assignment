@@ -9,7 +9,7 @@ export default function BookCard({
 }) {
   return (
     <>
-      <div className=" relative max-w-sm rounded overflow-hidden shadow-lg">
+      <div className=" relative max-w-sm rounded overflow-hidden shadow-lg py-4">
         <div className="px-6 py-4">
           <div className=" mb-4 flex flex-col justify-between">
             <h1 className="font-bold text-xl">
@@ -17,7 +17,12 @@ export default function BookCard({
             </h1>
             <p className="font-semibold text-md">{book?.author}</p>
           </div>
-          <p className="text-gray-700 text-base">{book.description}</p>
+
+          <p className="text-gray-700 text-base">
+            {book.description.length > 100
+              ? `${book.description.substring(0, 100)}...`
+              : book.description}
+          </p>
         </div>
 
         <div className="flex justify-between">
