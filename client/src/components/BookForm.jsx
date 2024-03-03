@@ -4,10 +4,10 @@ import { useState } from "react";
 
 const BookForm = ({ book, onClose, setRefresh }) => {
   const [formData, setFormData] = useState({
-    title: book.title ?? "",
-    author: book.author ?? "",
-    description: book.description ?? "",
-    pageCount: book.pageCount ?? "",
+    title: book?.title ?? "",
+    author: book?.author ?? "",
+    description: book?.description ?? "",
+    pageCount: book?.pageCount ?? "",
   });
 
   const handleChange = (e) => {

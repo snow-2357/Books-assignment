@@ -9,10 +9,14 @@ import BookForm from "./BookForm";
 export default function BookList() {
   const [books, setBooks] = useState([]);
   const { logout } = useContext(AuthContext);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [currentBook, setCurrentBook] = useState(null);
   const [refresh, setRefresh] = useState(false);
+
+  const openAddModal = () => setAddModalOpen(true);
+  const closeAddModal = () => setAddModalOpen(false);
 
   const openEditModal = () => setEditModalOpen(true);
   const closeEditModal = () => setEditModalOpen(false);
@@ -37,7 +41,13 @@ export default function BookList() {
 
   return (
     <div className="relative">
-      <div className="flex w-full justify-end my-4 px-4">
+      <div className="flex w-full justify-between my-4 px-4">
+        <button
+          onClick={openAddModal}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Add new Book
+        </button>
         <button
           onClick={logout}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -60,6 +70,11 @@ export default function BookList() {
             ))}
         </div>
       </div>
+      <BookModal
+        isOpen={addModalOpen}
+        onClose={closeAddModal}
+        setRefresh={() => setRefresh((prev) => !prev)}
+      />
       <BookEditModal
         isOpen={editModalOpen}
         onClose={closeEditModal}
@@ -75,6 +90,18 @@ export default function BookList() {
     </div>
   );
 }
+
+const BookModal = ({ isOpen, onClose, setRefresh }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="absolute top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
+      <div className="">
+        <BookForm onClose={onClose} setRefresh={setRefresh} />
+      </div>
+    </div>
+  );
+};
 
 const BookEditModal = ({ isOpen, onClose, book, setRefresh }) => {
   if (!isOpen) return null;
