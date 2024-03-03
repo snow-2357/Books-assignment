@@ -5,6 +5,7 @@ import axios from "axios";
 import BookCard from "./BookCard";
 import { AuthContext } from "../App";
 import BookForm from "./BookForm";
+import Pagination from "./Pagination";
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
@@ -14,6 +15,9 @@ export default function BookList() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [currentBook, setCurrentBook] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(4);
+  const [totalPages, setTotalPages] = useState(1);
 
   const openAddModal = () => setAddModalOpen(true);
   const closeAddModal = () => setAddModalOpen(false);
@@ -33,16 +37,22 @@ export default function BookList() {
           `${import.meta.env.VITE_BACKEND_URL}/book/all`,
           {
             headers: { token: userToken },
+            params: { page: currentPage, limit: pageSize },
           }
         );
         setBooks(response?.data?.books);
+        setTotalPages(response?.data?.totalPages);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
     };
 
     fetchBooks();
-  }, [refresh]);
+  }, [refresh, currentPage, pageSize]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="relative">
@@ -75,6 +85,14 @@ export default function BookList() {
             ))}
         </div>
       </div>
+      <div className="flex justify-center py-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
+
       <BookModal
         isOpen={addModalOpen}
         onClose={closeAddModal}
