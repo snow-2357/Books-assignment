@@ -4,7 +4,7 @@ import { checkToken } from "../utils/auth.js";
 
 const router = express.Router();
 
-router.get("/all", async (req, res) => {
+router.get("/all", checkToken, async (req, res) => {
   try {
     const books = await Book.find();
     res.status(200).json(books);
@@ -13,7 +13,7 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", checkToken, async (req, res) => {
   const { title, author, description, pageCount } = req.body;
 
   try {
@@ -31,7 +31,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkToken, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -45,7 +45,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkToken, async (req, res) => {
   const { id } = req.params;
   const { title, author, description, pageCount } = req.body;
 
@@ -64,7 +64,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkToken, async (req, res) => {
   const { id } = req.params;
 
   try {

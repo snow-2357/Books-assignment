@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../App";
 
 const BookForm = ({ book, onClose, setRefresh }) => {
+  const { userToken } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     title: book?.title ?? "",
     author: book?.author ?? "",
@@ -25,12 +27,18 @@ const BookForm = ({ book, onClose, setRefresh }) => {
       if (!book) {
         response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/book/create`,
-          formData
+          formData,
+          {
+            headers: { token: userToken },
+          }
         );
       } else {
         response = await axios.put(
           `${import.meta.env.VITE_BACKEND_URL}/book/${book._id}`,
-          formData
+          formData,
+          {
+            headers: { token: userToken },
+          }
         );
       }
       console.log("Book saved successfully:", response.data);

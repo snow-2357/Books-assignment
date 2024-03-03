@@ -24,11 +24,16 @@ export default function BookList() {
   const openDeleteModal = () => setDeleteModalOpen(true);
   const closeDeleteModal = () => setDeleteModalOpen(false);
 
+  const { userToken } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/book/all`
+          `${import.meta.env.VITE_BACKEND_URL}/book/all`,
+          {
+            headers: { token: userToken },
+          }
         );
         setBooks(response.data);
       } catch (error) {
@@ -116,12 +121,16 @@ const BookEditModal = ({ isOpen, onClose, book, setRefresh }) => {
 };
 
 const BookDeleteModal = ({ isOpen, onClose, book, setRefresh }) => {
+  const { userToken } = useContext(AuthContext);
   if (!isOpen) return null;
 
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/book/${book._id}`
+        `${import.meta.env.VITE_BACKEND_URL}/book/${book._id}`,
+        {
+          headers: { token: userToken },
+        }
       );
 
       onClose();
