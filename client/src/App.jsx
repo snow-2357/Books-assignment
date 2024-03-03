@@ -25,6 +25,7 @@ function App() {
     localStorage.removeItem("token");
     setUserToken(null);
     setIsLoggedIn(false);
+    setSignInUpToggle(true);
   };
 
   useEffect(() => {
