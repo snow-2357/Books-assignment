@@ -4,6 +4,7 @@ import axios from "axios";
 
 import BookCard from "./BookCard";
 import { AuthContext } from "../App";
+import BookForm from "./BookForm";
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
@@ -12,7 +13,6 @@ export default function BookList() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [currentBook, setCurrentBook] = useState(null);
   const [refresh, setRefresh] = useState(false);
-  console.log(currentBook);
 
   const openEditModal = () => setEditModalOpen(true);
   const closeEditModal = () => setEditModalOpen(false);
@@ -82,10 +82,7 @@ const BookEditModal = ({ isOpen, onClose, book, setRefresh }) => {
   return (
     <div className="absolute top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
       <div className="">
-        <span className=" cursor-pointer" onClick={onClose}>
-          &times;
-        </span>
-        {/* Your edit book form or content here */}
+        <BookForm book={book} onClose={onClose} setRefresh={setRefresh} />
       </div>
     </div>
   );

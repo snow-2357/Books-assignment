@@ -37,13 +37,11 @@ function App() {
               headers: { token: userToken },
             }
           );
-          console.log(response);
-          setIsLoggedIn(true);
+          if (response.status === 200) setIsLoggedIn(true);
         }
       } catch (error) {
         console.error("Error:", error);
       }
-      // setIsLoading(false);
     };
 
     checkTokenValidity();
