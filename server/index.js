@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://books-assignment-f1n40df7o-simantaray.vercel.app/",
+    origin: "https://sima-book-assignment-fe.vercel.app/",
     credentials: true,
   })
 );
