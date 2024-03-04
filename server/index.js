@@ -8,12 +8,7 @@ import bookRouter from "./src/router/book.js";
 const app = express();
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "https://sima-book-assignment-fe.vercel.app/",
-    // credentials: true,
-  })
-);
+app.use(cors());
 
 const port = 3000;
 dotenv.config();
