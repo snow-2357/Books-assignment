@@ -9,7 +9,7 @@ export default function BookCard({
 }) {
   return (
     <>
-      <div className=" relative max-w-sm rounded overflow-hidden shadow-lg py-4">
+      <div className="capitalize relative max-w-sm rounded overflow-hidden shadow-lg py-4">
         <div className="px-6 py-4">
           <div className=" mb-4 flex flex-col justify-between">
             <h1 className="font-bold text-xl">
