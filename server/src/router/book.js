@@ -13,7 +13,7 @@ const router = express.Router();
 //   }
 // });
 
-router.get("/all", checkToken, async (req, res) => {
+router.get("/all", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 4;
 
@@ -30,7 +30,7 @@ router.get("/all", checkToken, async (req, res) => {
       books,
     });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -48,7 +48,7 @@ router.post("/create", checkToken, async (req, res) => {
     await book.save();
     res.status(201).json({ message: "New book created", book });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -62,7 +62,7 @@ router.get("/:id", checkToken, async (req, res) => {
     }
     res.status(200).json(book);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -81,7 +81,7 @@ router.put("/:id", checkToken, async (req, res) => {
     }
     res.status(200).json(book);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -95,9 +95,36 @@ router.delete("/:id", checkToken, async (req, res) => {
     }
     res.status(200).send("Book deleted successfully");
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-router.get("/search", async (req, res) => {});
+router.get("/search/:text/:category?", async (req, res) => {
+  const { category, text } = req.params;
+  console.log(category, text);
+  let query;
+
+  switch (category) {
+    case "author":
+      query = {
+        author: { $regex: text, $options: "i" },
+      };
+      break;
+
+    default:
+      query = {
+        title: { $regex: text, $options: "i" },
+      };
+      break;
+  }
+  console.log(query);
+  try {
+    const books = await Book.find(query);
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 export default router;
