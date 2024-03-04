@@ -8,7 +8,12 @@ import bookRouter from "./src/router/book.js";
 const app = express();
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://books-assignment-f1n40df7o-simantaray.vercel.app/",
+    credentials: true,
+  })
+);
 
 const port = 3000;
 dotenv.config();
