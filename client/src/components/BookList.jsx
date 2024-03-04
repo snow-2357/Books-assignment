@@ -28,19 +28,19 @@ export default function BookList() {
 
   const openDeleteModal = () => setDeleteModalOpen(true);
   const closeDeleteModal = () => setDeleteModalOpen(false);
-
+  const [url, setUrl] = useState(
+    `${import.meta.env.VITE_BACKEND_URL}/book/search/all`
+  );
+  console.log(url);
   const { userToken } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/book/all`,
-          {
-            headers: { token: userToken },
-            params: { page: currentPage, limit: pageSize },
-          }
-        );
+        const response = await axios.get(url, {
+          headers: { token: userToken },
+          params: { page: currentPage, limit: pageSize },
+        });
         setBooks(response?.data?.books);
         setTotalPages(response?.data?.totalPages);
       } catch (error) {
@@ -49,24 +49,20 @@ export default function BookList() {
     };
 
     fetchBooks();
-  }, [refresh, currentPage, pageSize]);
+  }, [url, refresh, currentPage, pageSize]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const handleSearch = async (filterBy, filterText) => {
-    try {
-      const response = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/book/search/${filterText}/${filterBy}`
-      );
-      console.log(response.data);
-      setBooks(response?.data);
-    } catch (error) {
-      console.error("Error occurred during search:", error);
-    }
+    setCurrentPage(1);
+    setTotalPages(1);
+    setUrl(
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/book/search/${filterBy}/${filterText}`
+    );
   };
 
   return (

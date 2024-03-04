@@ -99,32 +99,91 @@ router.delete("/:id", checkToken, async (req, res) => {
   }
 });
 
-router.get("/search/:text/:category?", async (req, res) => {
+// router.get("/search/:category?/:text?", async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
+//   const limit = 4;
+//   const skip = (page - 1) * limit;
+
+//   const { category, text } = req.params;
+
+//   let query;
+//   if (!text) {
+//     const totalCount = await Book.countDocuments();
+//     const totalPages = Math.ceil(totalCount / limit);
+//     const offset = (page - 1) * limit;
+
+//     const books = await Book.find().skip(offset).limit(limit);
+
+//     res.status(200).json({
+//       page,
+//       totalPages,
+//       books,
+//     });
+//   } else {
+//     switch (category) {
+//       case "author":
+//         query = {
+//           author: { $regex: text, $options: "i" },
+//         };
+//         break;
+
+//       default:
+//         query = {
+//           title: { $regex: text, $options: "i" },
+//         };
+//         break;
+//     }
+
+//     try {
+
+//       const books = await Book.find(query).skip(skip).limit(limit);
+
+//       res.status(200).json({ books });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   }
+// });
+router.get("/search/:category?/:text?", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 4;
+  const skip = (page - 1) * limit;
+
   const { category, text } = req.params;
-  console.log(category, text);
-  let query;
 
-  switch (category) {
-    case "author":
-      query = {
-        author: { $regex: text, $options: "i" },
-      };
-      break;
+  let query = {};
+  if (text) {
+    switch (category) {
+      case "author":
+        query.author = { $regex: text, $options: "i" };
+        break;
+      case "title":
+        query.title = { $regex: text, $options: "i" };
+        break;
 
-    default:
-      query = {
-        title: { $regex: text, $options: "i" },
-      };
-      break;
+      default:
+        query = {};
+        break;
+    }
   }
-  console.log(query);
-  try {
-    const books = await Book.find(query);
 
-    res.status(200).json(books);
+  try {
+    let totalCount = await Book.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
+    const offset = (page - 1) * limit;
+
+    let books = await Book.find(query).skip(offset).limit(limit);
+
+    res.status(200).json({
+      page,
+      totalPages: totalCount ? Math.ceil(totalCount / limit) : null,
+      books,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 export default router;
