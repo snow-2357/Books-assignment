@@ -13,7 +13,7 @@ const router = express.Router();
 //   }
 // });
 
-router.get("/all", async (req, res) => {
+router.get("/all", checkToken, async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 4;
 
@@ -99,7 +99,7 @@ router.delete("/:id", checkToken, async (req, res) => {
   }
 });
 
-router.get("/search/:category?/:text?", async (req, res) => {
+router.get("/search/:category?/:text?", checkToken, async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 4;
   const skip = (page - 1) * limit;
