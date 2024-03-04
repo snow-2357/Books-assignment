@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://sima-book-assignment-fe.vercel.app/",
-    credentials: true,
+    // credentials: true,
   })
 );
 
