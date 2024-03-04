@@ -6,6 +6,7 @@ import BookCard from "./BookCard";
 import { AuthContext } from "../App";
 import BookForm from "./BookForm";
 import Pagination from "./Pagination";
+import SearchBar from "./SearchBar";
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
@@ -54,6 +55,20 @@ export default function BookList() {
     setCurrentPage(page);
   };
 
+  const handleSearch = async (filterBy, filterText) => {
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/book/search/${filterText}/${filterBy}`
+      );
+      console.log(response.data);
+      setBooks(response?.data);
+    } catch (error) {
+      console.error("Error occurred during search:", error);
+    }
+  };
+
   return (
     <div className="relative">
       <div className="flex w-full justify-between my-4 px-4">
@@ -70,19 +85,24 @@ export default function BookList() {
           LogOut
         </button>
       </div>
-
+      <SearchBar handleSearch={(type, text) => handleSearch(type, text)} />
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-          {books &&
-            books?.map((book, index) => (
-              <BookCard
-                key={index}
-                book={book}
-                openEditModal={openEditModal}
-                openDeleteModal={openDeleteModal}
-                setCurrentBook={(book) => setCurrentBook(book)}
-              />
-            ))}
+          {books && books.length <= 0 ? (
+            <>Empty list</>
+          ) : (
+            <>
+              {books?.map((book, index) => (
+                <BookCard
+                  key={index}
+                  book={book}
+                  openEditModal={openEditModal}
+                  openDeleteModal={openDeleteModal}
+                  setCurrentBook={(book) => setCurrentBook(book)}
+                />
+              ))}
+            </>
+          )}
         </div>
       </div>
       <div className="flex justify-center py-4">
@@ -118,7 +138,7 @@ const BookModal = ({ isOpen, onClose, setRefresh }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
+    <div className="absolute z-20 top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
       <div className="">
         <BookForm onClose={onClose} setRefresh={setRefresh} />
       </div>
@@ -130,7 +150,7 @@ const BookEditModal = ({ isOpen, onClose, book, setRefresh }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
+    <div className="absolute z-20 top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
       <div className="">
         <BookForm book={book} onClose={onClose} setRefresh={setRefresh} />
       </div>
@@ -159,7 +179,7 @@ const BookDeleteModal = ({ isOpen, onClose, book, setRefresh }) => {
   };
 
   return (
-    <div className="absolute top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
+    <div className="absolute z-20 top-[-16px] w-full h-screen bg-gray-300 bg-opacity-20">
       <div className="">
         <div className="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
           <div className="flex justify-between items-center py-3 px-4 dark:border-gray-700">
